@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.simplejson.*;
+import com.simplejson.parser.*;
 
 /**
  * Unit test for simple App.
@@ -45,7 +46,7 @@ public class SimpleJSONNullTest extends TestCase{
         SimpleJSON json = new SimpleJSON();
         try{
             assertEquals(json.getString(), "null");
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert false;
         }
     }
@@ -55,7 +56,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getStringOnly();
             fail();
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -65,7 +66,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getBoolean();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -75,7 +76,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getByte();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -85,7 +86,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getShort();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -95,7 +96,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getInt();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -105,7 +106,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getLong();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -115,7 +116,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getInteger();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -125,7 +126,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getFloat();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -135,7 +136,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getDouble();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -145,7 +146,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.getDecimal();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -155,7 +156,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.put("abcdef", new SimpleJSON());
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -165,7 +166,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.putAll(new SimpleJSON());
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -177,7 +178,7 @@ public class SimpleJSONNullTest extends TestCase{
             map.put("something", json);
             json.putAll(map);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -187,7 +188,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.clear();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -197,7 +198,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.remove("abcdef");
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -207,7 +208,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.remove(0);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -219,7 +220,7 @@ public class SimpleJSONNullTest extends TestCase{
             lst.add(new SimpleJSON("sef"));
             json.removeAll(lst);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -231,7 +232,7 @@ public class SimpleJSONNullTest extends TestCase{
             lst.add(new SimpleJSON("sef"));
             json.retainAll(lst);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -241,7 +242,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.add(new SimpleJSON());
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -254,7 +255,7 @@ public class SimpleJSONNullTest extends TestCase{
             lst.add(new SimpleJSON("something"));
             json.addAll(lst);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -264,7 +265,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.contains(new SimpleJSON("abcdef"));
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -277,7 +278,7 @@ public class SimpleJSONNullTest extends TestCase{
             lst.add(new SimpleJSON("something"));
             json.containsAll(lst);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -287,7 +288,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.containsKey("abcdef");
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -297,7 +298,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.containsKey("abcdef");
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -307,7 +308,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.isEmpty();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -317,7 +318,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.get("abcdef");
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -327,7 +328,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.get(0);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -337,7 +338,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.keySet();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -347,7 +348,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.values();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -357,7 +358,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.entrySet();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -367,7 +368,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.toArray();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -378,7 +379,7 @@ public class SimpleJSONNullTest extends TestCase{
             SimpleJSON[] arr = new SimpleJSON[1];
             json.toArray(arr);
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }
@@ -388,7 +389,7 @@ public class SimpleJSONNullTest extends TestCase{
         try{
             json.size();
             assert false;
-        }catch(InvalidClassException e){
+        }catch(InvalidTypeException e){
             assert true;
         }
     }

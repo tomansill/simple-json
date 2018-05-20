@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.simplejson.*;
+import com.simplejson.parser.*;
 
 /**
  * Unit test for simple App.
@@ -349,7 +350,7 @@ public class SimpleJSONParserTest extends TestCase{
          map.put("arr", arr);
          System.out.println("test: " + test_json);
          try{
-             SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toString());
+             SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toJSON());
              System.out.println("json: " + json);
              assertEquals(json.getType(), "array");
              assertEquals(json.get().getClass().getSimpleName(), ArrayList.class.getSimpleName());
@@ -387,7 +388,7 @@ public class SimpleJSONParserTest extends TestCase{
              test_json.get("array").add(new SimpleJSON());
              test_json.put("null", new SimpleJSON());
              System.out.println("test: " + test_json);
-             SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toString());
+             SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toJSON());
              System.out.println("json: " + json);
              assertEquals(json.getType(), "map");
              assertEquals(json.get().getClass().getSimpleName(), HashMap.class.getSimpleName());
