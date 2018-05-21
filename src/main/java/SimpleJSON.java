@@ -4,7 +4,7 @@ package com.simplejson;
  *  @author Tom Ansill
  *  @email tom@ansill.com
  */
- 
+
 import com.simplejson.parser.SimpleJSONParser;
 import java.io.IOException;
 import java.io.Reader;
@@ -205,8 +205,8 @@ public class SimpleJSON implements Iterable{
         if(this.is_null) return "null";
         if(this.s_value != null) return this.s_value;
         if(this.bd_value != null) return this.bd_value.toString();
-        if(this.map_value != null) throw new InvalidTypeException();
-        if(this.array_value != null) throw new InvalidTypeException();
+        if(this.map_value != null) throw new InvalidTypeException("The SimpleJSON object is a map. A String cannot be get from map.");
+        if(this.array_value != null) throw new InvalidTypeException("The SimpleJSON object is an array. A String cannot be get from map.");
         return this.b_value ? "true" : "false";
     }
 
@@ -218,7 +218,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized String getStringOnly() throws InvalidTypeException{
-        if(this.is_null || this.s_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.s_value == null) throw new InvalidTypeException("The SimpleJSON object is not a string");
         return this.s_value;
     }
 
@@ -227,7 +227,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean getBoolean() throws InvalidTypeException{
-        if(this.is_null) throw new InvalidTypeException();
+        if(this.is_null) throw new InvalidTypeException("The SimpleJSON object is not a boolean");
         return this.b_value;
     }
 
@@ -236,7 +236,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized byte getByte() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return (byte)bd_value.intValue();
     }
 
@@ -245,7 +245,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized short getShort() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return (short)bd_value.intValue();
     }
 
@@ -254,7 +254,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized int getInt() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return this.bd_value.intValue();
     }
 
@@ -263,7 +263,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized long getLong() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return this.bd_value.longValue();
     }
 
@@ -272,7 +272,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized BigInteger getInteger() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return this.bd_value.unscaledValue();
     }
 
@@ -281,7 +281,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized float getFloat() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return this.bd_value.floatValue();
     }
 
@@ -290,7 +290,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized double getDouble() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return this.bd_value.doubleValue();
     }
 
@@ -299,7 +299,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized BigDecimal getDecimal() throws InvalidTypeException{
-        if(this.is_null || this.bd_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.bd_value == null) throw new InvalidTypeException("The SimpleJSON object is not a number");
         return this.bd_value;
     }
 
@@ -376,6 +376,28 @@ public class SimpleJSON implements Iterable{
      *  @param value long value
      */
     public synchronized void set(long value){
+        this.is_null = false;
+        this.s_value = null;
+        this.bd_value = new BigDecimal(value);
+        this.map_value = null;
+        this.array_value = null;
+    }
+
+    /** Sets the SimpleJSON to numeric and discarding its previous state
+     *  @param value float value
+     */
+    public synchronized void set(float value){
+        this.is_null = false;
+        this.s_value = null;
+        this.bd_value = new BigDecimal(value);
+        this.map_value = null;
+        this.array_value = null;
+    }
+
+    /** Sets the SimpleJSON to numeric and discarding its previous state
+     *  @param value double value
+     */
+    public synchronized void set(double value){
         this.is_null = false;
         this.s_value = null;
         this.bd_value = new BigDecimal(value);
@@ -494,7 +516,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, SimpleJSON value) throws InvalidTypeException, NullPointerException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(value == null) value = new SimpleJSON();
         if(key == null) throw new NullPointerException("key is null!");
 
@@ -513,7 +535,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, byte value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -525,7 +547,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, short value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -537,7 +559,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, int value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -549,7 +571,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, long value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -561,7 +583,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, float value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -573,7 +595,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, double value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -585,7 +607,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, boolean value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.put(key, new SimpleJSON(value));
     }
 
@@ -597,7 +619,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, BigDecimal value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(value == null) this.map_value.put(key, new SimpleJSON());
         else this.map_value.put(key, new SimpleJSON(value));
     }
@@ -610,7 +632,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, BigInteger value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(value == null) this.map_value.put(key, new SimpleJSON());
         else this.map_value.put(key, new SimpleJSON(new BigDecimal(value)));
     }
@@ -624,7 +646,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, String value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(value == null) this.map_value.put(key, new SimpleJSON());
         else this.map_value.put(key, new SimpleJSON(value));
     }
@@ -638,7 +660,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, Collection<SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(value == null) this.map_value.put(key, new SimpleJSON());
         else this.map_value.put(key, new SimpleJSON(value));
     }
@@ -652,7 +674,7 @@ public class SimpleJSON implements Iterable{
      *  @throws NullPointerException thrown if key is null
      */
     public synchronized void put(String key, Map<String,SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(value == null) this.map_value.put(key, new SimpleJSON());
         else this.map_value.put(key, new SimpleJSON(value));
     }
@@ -663,8 +685,8 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized void putAll(SimpleJSON value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException("value is not a map!");
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
+        if(value.map_value == null) throw new InvalidTypeException("value is not a map!");
 
         // If value is array or map, copy it
         if(value.get() instanceof HashMap) value = new SimpleJSON(value);
@@ -679,7 +701,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized void putAll(Map<String, SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         this.map_value.putAll(value);
     }
 
@@ -688,7 +710,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized void clear() throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(this.map_value != null) this.map_value.clear();
         this.array_value.clear();
     }
@@ -700,7 +722,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized SimpleJSON remove(String key) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.remove(key);
     }
 
@@ -711,7 +733,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized SimpleJSON remove(int index) throws InvalidTypeException{
-        if(this.is_null || (this.map_value == null && this.array_value == null)) throw new InvalidTypeException();
+        if(this.is_null || (this.map_value == null && this.array_value == null)) throw new InvalidTypeException("The SimpleJSON object is not an array or map");
         if(this.map_value != null) return this.map_value.remove("" + index);
         return this.array_value.remove(index);
     }
@@ -723,7 +745,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean removeAll(Collection<SimpleJSON> list) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         return this.array_value.removeAll(list);
     }
 
@@ -734,7 +756,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean retainAll(Collection<SimpleJSON> list) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         return this.array_value.retainAll(list);
     }
 
@@ -745,7 +767,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(SimpleJSON value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         if(value == null) value = new SimpleJSON();
 
         // If value is array or map, copy it
@@ -761,7 +783,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(boolean value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -771,7 +793,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(byte value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -781,7 +803,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(short value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -791,7 +813,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(int value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -801,7 +823,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(long value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -811,7 +833,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(float value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -821,7 +843,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(double value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.add(new SimpleJSON(value));
     }
 
@@ -832,7 +854,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(String value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         if(value == null) this.array_value.add(new SimpleJSON());
         this.array_value.add(new SimpleJSON(value));
     }
@@ -844,7 +866,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(BigDecimal value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         if(value == null) this.array_value.add(new SimpleJSON());
         this.array_value.add(new SimpleJSON(value));
     }
@@ -856,7 +878,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(BigInteger value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         if(value == null) this.array_value.add(new SimpleJSON());
         this.array_value.add(new SimpleJSON(new BigDecimal(value)));
     }
@@ -868,7 +890,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(Collection<SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         if(value == null) this.array_value.add(new SimpleJSON());
         this.array_value.add(new SimpleJSON(value));
     }
@@ -880,7 +902,7 @@ public class SimpleJSON implements Iterable{
     *   @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
     */
     public synchronized void add(Map<String,SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         if(value == null) this.array_value.add(new SimpleJSON());
         this.array_value.add(new SimpleJSON(value));
     }
@@ -891,7 +913,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized void addAll(Collection<SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         this.array_value.addAll(value);
     }
 
@@ -902,7 +924,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean contains(SimpleJSON value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         return this.array_value.contains(value);
     }
 
@@ -913,7 +935,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean containsAll(Collection<SimpleJSON> value) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         return this.array_value.containsAll(value);
     }
 
@@ -924,7 +946,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean containsKey(String key) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.containsKey(key);
     }
 
@@ -935,7 +957,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean containsValue(SimpleJSON value) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.containsValue(value);
     }
 
@@ -945,7 +967,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean isEmpty() throws InvalidTypeException{
-        if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException();
+        if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException("The SimpleJSON object is not an array or map");
         if(this.map_value != null) return this.map_value.isEmpty();
         return this.array_value.isEmpty();
     }
@@ -957,7 +979,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized SimpleJSON get(String key) throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.get(key);
     }
 
@@ -968,7 +990,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized SimpleJSON get(int key) throws InvalidTypeException{
-        if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException();
+        if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException("The SimpleJSON object is not an array or map");
         if(this.map_value != null) return this.map_value.get("" + key);
         return this.array_value.get(key);
     }
@@ -979,7 +1001,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized Set<String> keySet() throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.keySet();
     }
 
@@ -989,7 +1011,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized Collection<SimpleJSON> values() throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.values();
     }
 
@@ -999,7 +1021,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized Set<Map.Entry<String,SimpleJSON>> entrySet() throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         return this.map_value.entrySet();
     }
 
@@ -1009,7 +1031,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized Object[] toArray() throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         return this.array_value.toArray();
     }
 
@@ -1022,7 +1044,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized SimpleJSON[] toArray(SimpleJSON[] a) throws InvalidTypeException{
-        if(this.is_null || this.array_value == null) throw new InvalidTypeException();
+        if(this.is_null || this.array_value == null) throw new InvalidTypeException("The SimpleJSON object is not an array");
         return this.array_value.toArray(a);
     }
 
@@ -1032,7 +1054,7 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized int size() throws InvalidTypeException{
-        if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException();
+        if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException("The SimpleJSON object is not an array or map");
         if(this.map_value != null) return this.map_value.size();
         return this.array_value.size();
     }

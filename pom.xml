@@ -25,28 +25,84 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
             </plugin>
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-javadoc-plugin</artifactId>
-    <version>3.0.0</version>
-    <configuration>
-        <outputDirectory>docs</outputDirectory>
-        <quiet>true</quiet>
-        <sourceFileIncludes>
-            <sourceFileInclude>**/*.java</sourceFileInclude>
-        </sourceFileIncludes>
-    </configuration>
-    <executions>
-        <execution>
-            <id>attach-javadocs</id>
-            <goals>
-                <goal>jar</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <outputDirectory>docs</outputDirectory>
+                    <quiet>true</quiet>
+                    <sourceFileIncludes>
+                        <sourceFileInclude>**/*.java</sourceFileInclude>
+                    </sourceFileIncludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <instrumentation>
+                        <ignores>
+                            <ignore>com.simplejson.InvalidTypeException</ignore>
+                            <ignore>com.simplejson.parser.SimpleJSONParser</ignore>
+                        </ignores>
+                        <excludes>
+                            <exclude>**/InvalidTypeException.*</exclude>
+                            <exclude>**/SimpleJSONParser.*</exclude>
+                        </excludes>
+                    </instrumentation>
+                    <check>
+                        <branchRate>85</branchRate>
+                        <lineRate>85</lineRate>
+                        <haltOnFailure>false</haltOnFailure>
+                        <totalBranchRate>85</totalBranchRate>
+                        <totalLineRate>85</totalLineRate>
+                        <!--<packageLineRate>85</packageLineRate>
+                        <packageBranchRate>85</packageBranchRate>-->
+                        <regexes>
+                            <!-- Not very important if those don't have good coverage -->
+                            <regex>
+                                <pattern>com.simplejson.InvalidTypeException</pattern>
+                                <branchRate>10</branchRate>
+                                <lineRate>10</lineRate>
+                            </regex>
+                            <regex>
+                                <pattern>com.simplejson.parser.SimpleJSONParser</pattern>
+                                <branchRate>10</branchRate>
+                                <lineRate>10</lineRate>
+                            </regex>
+                        </regexes>
+                    </check>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+        </plugins>
+    </reporting>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

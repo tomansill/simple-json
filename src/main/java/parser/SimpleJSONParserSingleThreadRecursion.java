@@ -24,7 +24,7 @@ public class SimpleJSONParserSingleThreadRecursion{
     public SimpleJSONParserSingleThreadRecursion(){}
 
     public SimpleJSON fromJSON(Reader reader) throws IOException, ParseException{
-        System.out.println("> fromJSON: " + this.position);
+        //System.out.println("> fromJSON: " + this.position);
 
         // Create buffered reader
         BufferedReader br = new BufferedReader(reader);
@@ -39,13 +39,13 @@ public class SimpleJSONParserSingleThreadRecursion{
             if(!Character.isWhitespace((char)character)) throw new ParseException("There's still some characters remaining while reading.", (int)this.position);
         }
 
-        System.out.println("position: " + this.position);
+        //System.out.println("position: " + this.position);
 
         return json;
     }
 
     private SimpleJSON handleValue(BufferedReader br) throws IOException, ParseException{
-        System.out.println("> handleValue: " + this.position);
+        //System.out.println("> handleValue: " + this.position);
 
         // Read until EOF
         int character = -1;
@@ -54,7 +54,7 @@ public class SimpleJSONParserSingleThreadRecursion{
             // Increment position
             this.position++;
 
-            System.out.println("v>> '" + (char)character + "' " + this.position);
+            //System.out.println("v>> '" + (char)character + "' " + this.position);
 
             // Skip if whitespace
             if(Character.isWhitespace((char)character)) continue;
@@ -106,7 +106,7 @@ public class SimpleJSONParserSingleThreadRecursion{
     }
 
     private SimpleJSON handleMap(BufferedReader br) throws IOException, ParseException{
-        System.out.println("> handleMap: " + this.position);
+        //System.out.println("> handleMap: " + this.position);
         HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
         int character = -1;
         boolean end = false;
@@ -120,7 +120,7 @@ public class SimpleJSONParserSingleThreadRecursion{
             // Increment position
             this.position++;
 
-            System.out.println("m>> '" + (char)character + "' " + this.position);
+            //System.out.println("m>> '" + (char)character + "' " + this.position);
 
             // Skip if whitespace
             if(Character.isWhitespace((char)character)) continue;
@@ -141,7 +141,7 @@ public class SimpleJSONParserSingleThreadRecursion{
                             break;
                 case ':':   if(comma || key == null) throw new ParseException("Unexpected semicolon", (int)this.position);
                             SimpleJSON value = handleValue(br);
-                            System.out.println(">> new pair: " + key + " : " + value + " " + this.position);
+                            //System.out.println(">> new pair: " + key + " : " + value + " " + this.position);
                             map.put(key, value);
                             comma = false;
                             first = false;
@@ -149,18 +149,18 @@ public class SimpleJSONParserSingleThreadRecursion{
                             break;
                 default:    throw new ParseException("Unexpected syntax '" + (char)character + "'", (int)this.position);
             }
-            System.out.println("## map tracker: end : " + end + " comma: " + comma + " first: " + first + " char: '" + (char)character + "' key: " + key + " position: " + this.position);
+            //System.out.println("## map tracker: end : " + end + " comma: " + comma + " first: " + first + " char: '" + (char)character + "' key: " + key + " position: " + this.position);
         }
 
         if(!end) throw new ParseException("Missing end of map", (int)this.position);
 
         SimpleJSON json = new SimpleJSON(map);
-        System.out.println("map>>>> " + json);
+        //System.out.println("map>>>> " + json);
         return new SimpleJSON(map);
     }
 
     private SimpleJSON handleArray(BufferedReader br) throws IOException, ParseException{
-        System.out.println("> handleArray: " + this.position);
+        //System.out.println("> handleArray: " + this.position);
         LinkedList<SimpleJSON> list = new LinkedList<SimpleJSON>();
         int character = -1;
         boolean end = false;
@@ -176,7 +176,7 @@ public class SimpleJSONParserSingleThreadRecursion{
             // Increment position
             this.position++;
 
-            System.out.println("a>> '" + (char)character + "' " + this.position);
+            //System.out.println("a>> '" + (char)character + "' " + this.position);
 
             // Skip if whitespace
             if(Character.isWhitespace((char)character)){
@@ -190,13 +190,13 @@ public class SimpleJSONParserSingleThreadRecursion{
                             comma = true;
                             break;
                 case ']':   if(comma) throw new ParseException("Unexpected end of array", (int)this.position);
-                            System.out.println("ARRAY END " + this.position);
+                            //System.out.println("ARRAY END " + this.position);
                             end = true;
                             break;
                 default:    br.reset();
                             this.position--;
                             list.add(handleValue(br));
-                            System.out.println("VALUE EXTRACTED ON ARRAY " + this.position);
+                            //System.out.println("VALUE EXTRACTED ON ARRAY " + this.position);
                             first = false;
                             comma = false;
                             break;
@@ -207,12 +207,12 @@ public class SimpleJSONParserSingleThreadRecursion{
         if(!end) throw new ParseException("Missing end of array", (int)this.position);
 
         SimpleJSON json = new SimpleJSON(list);
-        System.out.println("arr>>>> " + json + " " + this.position);
+        //System.out.println("arr>>>> " + json + " " + this.position);
         return new SimpleJSON(list);
     }
 
     private SimpleJSON handleString(BufferedReader br) throws IOException, ParseException{
-        System.out.println("> handleString: " + this.position);
+        //System.out.println("> handleString: " + this.position);
         StringBuilder sb = new StringBuilder();
         int character = -1;
         boolean solidus = false;
@@ -224,7 +224,7 @@ public class SimpleJSONParserSingleThreadRecursion{
             // Increment position
             this.position++;
 
-            System.out.println("s>> '" + (char)character + "' " + this.position);
+            //System.out.println("s>> '" + (char)character + "' " + this.position);
 
             // Check for reverse solidus
             if((char)character == '\\'){
@@ -307,7 +307,7 @@ public class SimpleJSONParserSingleThreadRecursion{
     }
 
     private SimpleJSON handleNumber(BufferedReader br, char start) throws IOException, ParseException{
-        System.out.println("> handleNumber start: '" + start + "' position: " + this.position);
+        //System.out.println("> handleNumber start: '" + start + "' position: " + this.position);
         StringBuilder sb = new StringBuilder();
         sb.append(start);
         int character = -1;
@@ -318,7 +318,7 @@ public class SimpleJSONParserSingleThreadRecursion{
             // Increment position
             this.position++;
 
-            System.out.println("n>> '" + (char)character + "' " + this.position);
+            //System.out.println("n>> '" + (char)character + "' " + this.position);
 
             // A comma for map or array may slip on here, make sure we catch it and clean up
             if(!Character.isDigit((char)character) && (char)character != 'e' && (char)character != 'E' && (char)character != '.' && !Character.isWhitespace((char)character)){
@@ -343,9 +343,9 @@ public class SimpleJSONParserSingleThreadRecursion{
 
         // Convert to number
         try{
-            System.out.println("Number conversion: " + out);
+            //System.out.println("Number conversion: " + out);
             SimpleJSON json = new SimpleJSON(new BigDecimal(out));
-            System.out.println(">>>>>> " + json);
+            //System.out.println(">>>>>> " + json);
             return new SimpleJSON(new BigDecimal(out));
         }catch(NumberFormatException nfe){
             throw new ParseException("Invalid number at position " + (this.position - out.length()), (int)(this.position - out.length()));

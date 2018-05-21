@@ -28,7 +28,7 @@ public class SimpleJSONParser{
      *  @throws ParseException thrown when there's a problem with parsing the string
      */
     public static SimpleJSON fromJSON(String json_string) throws ParseException{
-        System.out.println("> fromJSON: " + json_string + " len: " + json_string.length());
+        //System.out.println("> fromJSON: " + json_string + " len: " + json_string.length());
         StringReader reader = new StringReader(json_string);
         SimpleJSON result = null;
         try{
