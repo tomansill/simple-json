@@ -15,13 +15,14 @@ import java.util.*;
 /**
  * Unit test for simple App.
  */
-public class SimpleJSONNullTest extends TestCase{
+public class SimpleJSONShortTest extends TestCase{
+
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public SimpleJSONNullTest(String testName){
+    public SimpleJSONShortTest(String testName){
         super(testName);
     }
 
@@ -29,33 +30,33 @@ public class SimpleJSONNullTest extends TestCase{
      * @return the suite of tests being tested
      */
     public static Test suite(){
-        return new TestSuite(SimpleJSONNullTest.class);
+        return new TestSuite(SimpleJSONShortTest.class);
     }
 
     /**
      * Rigourous Test :-)
      */
     public void testType(){
-        SimpleJSON json = new SimpleJSON();
-        assertTrue(json.getType().equals("null"));
+        SimpleJSON json = new SimpleJSON((short)1321);
+        assertTrue(json.getType().equals("number"));
     }
 
     public void testGet(){
-        SimpleJSON json = new SimpleJSON();
-        assertTrue(json.get() == null);
+        SimpleJSON json = new SimpleJSON((short)1321);
+        assertTrue(((BigDecimal)json.get()).intValue() == 1321);
     }
 
     public void testGetString(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
-            assertEquals(json.getString(), "null");
+            assertEquals(json.getString(), "1321");
         }catch(InvalidTypeException e){
-            assert false;
+            fail();
         }
     }
 
     public void testGetStringOnly(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.getStringOnly();
             fail();
@@ -65,173 +66,212 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetBoolean(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
-            json.getBoolean();
-            assert false;
+            assertEquals(10, json.getBoolean());
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testGetByte(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getByte();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals((byte)test_value, json.getByte());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetShort(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getShort();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals((short)test_value, json.getShort());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetInt(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getInt();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals((int)test_value, json.getInt());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetLong(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getLong();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals((long)test_value, json.getLong());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetInteger(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getInteger();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals(new BigInteger(test_value + ""), json.getInteger());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetFloat(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getFloat();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals((float)test_value, json.getFloat());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetDouble(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getDouble();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals((double)test_value, json.getDouble());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testGetDecimal(){
-        SimpleJSON json = new SimpleJSON();
-        try{
-            json.getDecimal();
-            assert false;
-        }catch(InvalidTypeException e){
-            assert true;
-        }
+        short test_value = 0;
+        int incrementer = Short.MAX_VALUE/256;
+        do{
+            SimpleJSON json = new SimpleJSON(test_value);
+            try{
+                assertEquals(new BigDecimal(test_value), json.getDecimal());
+            }catch(InvalidTypeException e){
+                e.printStackTrace();
+                fail();
+            }
+            test_value += incrementer;
+        }while(test_value != 0);
     }
 
     public void testSetNull(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set();
         assertEquals(null, json.get());
     }
 
     public void testSetString(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set("hello");
         assertEquals("string", json.getType());
         assertEquals("hello", json.get());
     }
 
     public void testSetBoolean(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(true);
         assertEquals("boolean", json.getType());
         assertEquals(true, json.get());
     }
 
     public void testSetByte(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set((byte)10);
         assertEquals("number", json.getType());
         assertEquals((byte)10, json.getByte());
     }
 
     public void testSetShort(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set((short)10);
         assertEquals("number", json.getType());
         assertEquals((short)10, json.getShort());
     }
 
     public void testSetInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(10);
         assertEquals("number", json.getType());
         assertEquals(10, json.getInt());
     }
 
     public void testSetLong(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(10L);
         assertEquals("number", json.getType());
         assertEquals(10L, json.getLong());
     }
 
     public void testSetFloat(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(10.0f);
         assertEquals("number", json.getType());
         assertEquals(10.0f, json.getFloat());
     }
 
     public void testSetDouble(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(10.0);
         assertEquals("number", json.getType());
         assertEquals(10.0, json.getDouble());
     }
 
     public void testSetBigInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(new BigInteger("10"));
         assertEquals("number", json.getType());
         assertEquals("10", json.getString());
     }
 
     public void testSetBigDecimal(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set(new BigDecimal("10"));
         assertEquals("number", json.getType());
         assertEquals("10", json.getString());
     }
 
     public void testSetMapSinglePair(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.set("key", new SimpleJSON("value"));
         assertEquals("map", json.getType());
         assertEquals("value", json.get("key").getStringOnly());
@@ -239,7 +279,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetMapDirect(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
         map.put("key", new SimpleJSON("value"));
         json.set(map);
@@ -249,7 +289,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         ArrayList<SimpleJSON> array = new ArrayList<SimpleJSON>();
         array.add(new SimpleJSON("value"));
         json.set(array);
@@ -259,451 +299,456 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetEmptyMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.setEmptyMap();
         assertEquals("map", json.getType());
         assertEquals(0, json.size());
     }
 
     public void testSetEmptyArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.setEmptyArray();
         assertEquals("array", json.getType());
         assertEquals(0, json.size());
     }
 
     public void testPut(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.put("abcdef", new SimpleJSON());
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testPutAllSimpleJSON(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.putAll(new SimpleJSON());
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testPutAllMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
             map.put("something", json);
             json.putAll(map);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testClear(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.clear();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testRemoveKey(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.remove("abcdef");
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testRemoveIndex(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.remove(0);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testRemoveAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("sef"));
             json.removeAll(lst);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testRetainAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("sef"));
             json.retainAll(lst);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAdd(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(new SimpleJSON());
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("aewfw"));
             lst.add(new SimpleJSON("something"));
             json.addAll(lst);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testContains(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.contains(new SimpleJSON("abcdef"));
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testContainsAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("aewfw"));
             lst.add(new SimpleJSON("something"));
             json.containsAll(lst);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testContainsKey(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.containsKey("abcdef");
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testContainsValue(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.containsKey("abcdef");
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void isEmpty(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.isEmpty();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testGetMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.get("abcdef");
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testGetArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.get(0);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddJSON(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(new SimpleJSON());
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddBoolean(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(true);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddByte(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add((byte)10);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddShort(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add((short)10);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(10);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddLong(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(10L);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddFloat(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(10.0f);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddDouble(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(10.0);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddString(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add("abcdef");
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddBigInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(new BigInteger("10"));
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddBigDecimal(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.add(new BigDecimal("10"));
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddCollection(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             ArrayList<SimpleJSON> list = new ArrayList<SimpleJSON>();
             list.add(new SimpleJSON());
             json.add(list);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
             map.put("key", new SimpleJSON());
             json.add(map);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testAddAllCollection(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             ArrayList<SimpleJSON> list = new ArrayList<SimpleJSON>();
             list.add(new SimpleJSON());
             json.addAll(list);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testIsEmpty(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.isEmpty();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testKeySet(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.keySet();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testValues(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.values();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testEntrySet(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.entrySet();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testToArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.toArray();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testToArrayWithArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             SimpleJSON[] arr = new SimpleJSON[1];
             json.toArray(arr);
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testSize(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         try{
             json.size();
-            assert false;
+            fail();
         }catch(InvalidTypeException e){
             assert true;
         }
     }
 
     public void testIterator(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON((short)1321);
         json.iterator();
     }
 
     public void testHashCode(){
-        SimpleJSON json = new SimpleJSON();
-        assertTrue(json.hashCode() == 0);
+        short testvalue = 1321;
+        SimpleJSON json = new SimpleJSON(testvalue);
+        assertTrue(json.hashCode() == new SimpleJSON(testvalue).hashCode());
     }
 
     public void testEquals(){
-        SimpleJSON json = new SimpleJSON();
-        SimpleJSON json1 = new SimpleJSON();
-        SimpleJSON json_str = new SimpleJSON("abdef");
+        SimpleJSON json = new SimpleJSON((short)1321);
+        SimpleJSON json1 = new SimpleJSON(1321);
+        SimpleJSON json2 = new SimpleJSON((short)9);
+        SimpleJSON json_str = new SimpleJSON("abcdef");
         assertTrue(json.equals(json));
         assertTrue(json.equals(json1));
+        assertFalse(json.equals(json2));
         assertFalse(json.equals(json_str));
     }
 
     public void testToJSON(){
-        SimpleJSON json = new SimpleJSON();
+        short testvalue = 1321;
+        SimpleJSON json = new SimpleJSON(testvalue);
         String out = json.toJSON();
-        assertTrue(out.equals("null"));
+        assertTrue(out.equals(testvalue + ""));
     }
 
     public void testParse(){
+        short testvalue = 1321;
         SimpleJSON json = null;
         try{
-            json = SimpleJSON.fromJSON("null");
+            json = SimpleJSON.fromJSON(testvalue+"");
         }catch(ParseException e){
-            assert false;
+            fail();
         }
-        assertTrue(json.getType().equals("null"));
-        assertTrue(json.get() == null);
+        assertTrue(json.getType().equals("number"));
+        assertTrue(json.getShort() == testvalue);
     }
 }

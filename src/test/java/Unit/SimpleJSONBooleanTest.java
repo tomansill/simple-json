@@ -15,13 +15,13 @@ import java.util.*;
 /**
  * Unit test for simple App.
  */
-public class SimpleJSONNullTest extends TestCase{
+public class SimpleJSONBooleanTest extends TestCase{
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public SimpleJSONNullTest(String testName){
+    public SimpleJSONBooleanTest(String testName){
         super(testName);
     }
 
@@ -29,33 +29,34 @@ public class SimpleJSONNullTest extends TestCase{
      * @return the suite of tests being tested
      */
     public static Test suite(){
-        return new TestSuite(SimpleJSONNullTest.class);
+        return new TestSuite(SimpleJSONBooleanTest.class);
     }
 
     /**
      * Rigourous Test :-)
      */
     public void testType(){
-        SimpleJSON json = new SimpleJSON();
-        assertTrue(json.getType().equals("null"));
+        SimpleJSON json = new SimpleJSON(true);
+        assertTrue(json.getType().equals("boolean"));
     }
 
     public void testGet(){
-        SimpleJSON json = new SimpleJSON();
-        assertTrue(json.get() == null);
+        SimpleJSON json = new SimpleJSON(true);
+        assertTrue(((Boolean)json.get()).booleanValue() == true);
     }
 
     public void testGetString(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
-            assertEquals(json.getString(), "null");
+            assertEquals(json.getString(), "true");
+            assert true;
         }catch(InvalidTypeException e){
-            assert false;
+            fail();
         }
     }
 
     public void testGetStringOnly(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getStringOnly();
             fail();
@@ -65,17 +66,17 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetBoolean(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
-            json.getBoolean();
-            assert false;
-        }catch(InvalidTypeException e){
+            assertTrue(json.getBoolean() == true);
             assert true;
+        }catch(InvalidTypeException e){
+            assert false;
         }
     }
 
     public void testGetByte(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getByte();
             assert false;
@@ -85,7 +86,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetShort(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getShort();
             assert false;
@@ -95,7 +96,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetInt(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getInt();
             assert false;
@@ -105,7 +106,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetLong(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getLong();
             assert false;
@@ -115,7 +116,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getInteger();
             assert false;
@@ -125,7 +126,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetFloat(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getFloat();
             assert false;
@@ -135,7 +136,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetDouble(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getDouble();
             assert false;
@@ -145,7 +146,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetDecimal(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.getDecimal();
             assert false;
@@ -155,83 +156,83 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetNull(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set();
         assertEquals(null, json.get());
     }
 
     public void testSetString(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set("hello");
         assertEquals("string", json.getType());
         assertEquals("hello", json.get());
     }
 
     public void testSetBoolean(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(true);
         assertEquals("boolean", json.getType());
         assertEquals(true, json.get());
     }
 
     public void testSetByte(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set((byte)10);
         assertEquals("number", json.getType());
         assertEquals((byte)10, json.getByte());
     }
 
     public void testSetShort(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set((short)10);
         assertEquals("number", json.getType());
         assertEquals((short)10, json.getShort());
     }
 
     public void testSetInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(10);
         assertEquals("number", json.getType());
         assertEquals(10, json.getInt());
     }
 
     public void testSetLong(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(10L);
         assertEquals("number", json.getType());
         assertEquals(10L, json.getLong());
     }
 
     public void testSetFloat(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(10.0f);
         assertEquals("number", json.getType());
         assertEquals(10.0f, json.getFloat());
     }
 
     public void testSetDouble(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(10.0);
         assertEquals("number", json.getType());
         assertEquals(10.0, json.getDouble());
     }
 
     public void testSetBigInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(new BigInteger("10"));
         assertEquals("number", json.getType());
         assertEquals("10", json.getString());
     }
 
     public void testSetBigDecimal(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set(new BigDecimal("10"));
         assertEquals("number", json.getType());
         assertEquals("10", json.getString());
     }
 
     public void testSetMapSinglePair(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.set("key", new SimpleJSON("value"));
         assertEquals("map", json.getType());
         assertEquals("value", json.get("key").getStringOnly());
@@ -239,7 +240,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetMapDirect(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
         map.put("key", new SimpleJSON("value"));
         json.set(map);
@@ -249,7 +250,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         ArrayList<SimpleJSON> array = new ArrayList<SimpleJSON>();
         array.add(new SimpleJSON("value"));
         json.set(array);
@@ -259,21 +260,21 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSetEmptyMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.setEmptyMap();
         assertEquals("map", json.getType());
         assertEquals(0, json.size());
     }
 
     public void testSetEmptyArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.setEmptyArray();
         assertEquals("array", json.getType());
         assertEquals(0, json.size());
     }
 
     public void testPut(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.put("abcdef", new SimpleJSON());
             assert false;
@@ -283,7 +284,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testPutAllSimpleJSON(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.putAll(new SimpleJSON());
             assert false;
@@ -293,7 +294,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testPutAllMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
             map.put("something", json);
@@ -305,7 +306,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testClear(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.clear();
             assert false;
@@ -315,7 +316,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testRemoveKey(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.remove("abcdef");
             assert false;
@@ -325,7 +326,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testRemoveIndex(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.remove(0);
             assert false;
@@ -335,7 +336,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testRemoveAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("sef"));
@@ -347,7 +348,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testRetainAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("sef"));
@@ -359,7 +360,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAdd(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(new SimpleJSON());
             assert false;
@@ -369,7 +370,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("aewfw"));
@@ -382,7 +383,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testContains(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.contains(new SimpleJSON("abcdef"));
             assert false;
@@ -392,7 +393,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testContainsAll(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             LinkedList<SimpleJSON> lst = new LinkedList<SimpleJSON>();
             lst.add(new SimpleJSON("aewfw"));
@@ -405,7 +406,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testContainsKey(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.containsKey("abcdef");
             assert false;
@@ -415,7 +416,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testContainsValue(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.containsKey("abcdef");
             assert false;
@@ -425,7 +426,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void isEmpty(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.isEmpty();
             assert false;
@@ -435,7 +436,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.get("abcdef");
             assert false;
@@ -445,7 +446,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testGetArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.get(0);
             assert false;
@@ -455,7 +456,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddJSON(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(new SimpleJSON());
             assert false;
@@ -465,7 +466,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddBoolean(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(true);
             assert false;
@@ -475,7 +476,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddByte(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add((byte)10);
             assert false;
@@ -485,7 +486,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddShort(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add((short)10);
             assert false;
@@ -495,7 +496,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(10);
             assert false;
@@ -505,7 +506,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddLong(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(10L);
             assert false;
@@ -515,7 +516,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddFloat(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(10.0f);
             assert false;
@@ -525,7 +526,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddDouble(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(10.0);
             assert false;
@@ -535,7 +536,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddString(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add("abcdef");
             assert false;
@@ -545,7 +546,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddBigInteger(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(new BigInteger("10"));
             assert false;
@@ -555,7 +556,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddBigDecimal(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.add(new BigDecimal("10"));
             assert false;
@@ -565,7 +566,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddCollection(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             ArrayList<SimpleJSON> list = new ArrayList<SimpleJSON>();
             list.add(new SimpleJSON());
@@ -577,7 +578,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddMap(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
             map.put("key", new SimpleJSON());
@@ -589,7 +590,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testAddAllCollection(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             ArrayList<SimpleJSON> list = new ArrayList<SimpleJSON>();
             list.add(new SimpleJSON());
@@ -601,7 +602,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testIsEmpty(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.isEmpty();
             assert false;
@@ -611,7 +612,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testKeySet(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.keySet();
             assert false;
@@ -621,7 +622,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testValues(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.values();
             assert false;
@@ -631,7 +632,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testEntrySet(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.entrySet();
             assert false;
@@ -641,7 +642,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testToArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.toArray();
             assert false;
@@ -651,7 +652,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testToArrayWithArray(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             SimpleJSON[] arr = new SimpleJSON[1];
             json.toArray(arr);
@@ -662,7 +663,7 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testSize(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         try{
             json.size();
             assert false;
@@ -672,38 +673,40 @@ public class SimpleJSONNullTest extends TestCase{
     }
 
     public void testIterator(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         json.iterator();
     }
 
     public void testHashCode(){
-        SimpleJSON json = new SimpleJSON();
-        assertTrue(json.hashCode() == 0);
+        SimpleJSON json = new SimpleJSON(true);
+        assertTrue(json.hashCode() == new SimpleJSON(true).hashCode());
     }
 
     public void testEquals(){
-        SimpleJSON json = new SimpleJSON();
-        SimpleJSON json1 = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
+        SimpleJSON json1 = new SimpleJSON(true);
+        SimpleJSON json2 = new SimpleJSON(false);
         SimpleJSON json_str = new SimpleJSON("abdef");
         assertTrue(json.equals(json));
         assertTrue(json.equals(json1));
+        assertFalse(json.equals(json2));
         assertFalse(json.equals(json_str));
     }
 
     public void testToJSON(){
-        SimpleJSON json = new SimpleJSON();
+        SimpleJSON json = new SimpleJSON(true);
         String out = json.toJSON();
-        assertTrue(out.equals("null"));
+        assertTrue(out.equals("true"));
     }
 
     public void testParse(){
         SimpleJSON json = null;
         try{
-            json = SimpleJSON.fromJSON("null");
+            json = SimpleJSON.fromJSON("true");
         }catch(ParseException e){
             assert false;
         }
-        assertTrue(json.getType().equals("null"));
-        assertTrue(json.get() == null);
+        assertTrue(json.getType().equals("boolean"));
+        assertTrue(json.getBoolean() == true);
     }
 }

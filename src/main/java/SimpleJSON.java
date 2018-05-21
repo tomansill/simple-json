@@ -227,7 +227,8 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized boolean getBoolean() throws InvalidTypeException{
-        if(this.is_null) throw new InvalidTypeException("The SimpleJSON object is not a boolean");
+        if(this.is_null || this.s_value != null || this.bd_value != null || this.map_value != null || this.array_value != null)
+            throw new InvalidTypeException("The SimpleJSON object is not a boolean");
         return this.b_value;
     }
 
