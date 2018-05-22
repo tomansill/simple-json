@@ -711,9 +711,9 @@ public class SimpleJSON implements Iterable{
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
     public synchronized void clear() throws InvalidTypeException{
-        if(this.is_null || this.map_value == null) throw new InvalidTypeException("The SimpleJSON object is not a map");
         if(this.map_value != null) this.map_value.clear();
-        this.array_value.clear();
+        else if(this.array_value != null) this.array_value.clear();
+        else throw new InvalidTypeException("The SimpleJSON object is not a map");
     }
 
     /** Removes a key on SimpleJSON map
