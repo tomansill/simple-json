@@ -227,10 +227,14 @@ public class SimpleJSONParserSingleThreadRecursion{
             //System.out.println("s>> '" + (char)character + "' " + this.position);
 
             // Check for reverse solidus
-            if((char)character == '\\'){
+            if((char)character == '\\' && !solidus){
                 solidus = true;
                 sb.append('\\');
                 continue;
+            }
+
+            if(solidus){
+                //System.out.println("########################solidus: " + (char)character);
             }
 
             // End of string reached
@@ -253,15 +257,15 @@ public class SimpleJSONParserSingleThreadRecursion{
                                 break;
                     case '/':  sb.append('/');
                                 break;
-                    case '\b':  sb.append('\b');
+                    case 'b':  sb.append('\b');
                                 break;
-                    case '\f':  sb.append('\f');
+                    case 'f':  sb.append('\f');
                                 break;
-                    case '\n':  sb.append('\n');
+                    case 'n':  sb.append('\n');
                                 break;
-                    case '\r':  sb.append('\r');
+                    case 'r':  sb.append('\r');
                                 break;
-                    case '\t':  sb.append('\t');
+                    case 't':  sb.append('\t');
                                 break;
 
                     // Unicode - requires 4 hexidecimal digits that appends to it
@@ -285,14 +289,18 @@ public class SimpleJSONParserSingleThreadRecursion{
                                 break;
 
                     // Error
-                    default:    throw new ParseException("Parse error at position " + this.position, (int)this.position);
+                    default:    throw new ParseException("Parse error at position " + this.position + " Reason: unrecognized character after solidus '" + (char)character + "'", (int)this.position);
                 }
 
             // Regular character
             }else{
 
                 // Check if character is unicode
-                if(Character.UnicodeBlock.of((char)character) != Character.UnicodeBlock.BASIC_LATIN) throw new ParseException("Parse error at position " + this.position, (int)this.position);
+                //if(Character.UnicodeBlock.of((char)character) != Character.UnicodeBlock.BASIC_LATIN){
+                //if(Character.isValidCodePoint(character)){
+                //    //System.out.println("Not a unicode");
+                //    throw new ParseException("Parse error at position " + this.position + " Reason: Not a Unicode character '" + (char)character + "'", (int)this.position);
+                //}
 
                 // Append
                 sb.append((char)character);
@@ -321,7 +329,7 @@ public class SimpleJSONParserSingleThreadRecursion{
             //System.out.println("n>> '" + (char)character + "' " + this.position);
 
             // A comma for map or array may slip on here, make sure we catch it and clean up
-            if(!Character.isDigit((char)character) && (char)character != 'e' && (char)character != 'E' && (char)character != '.' && !Character.isWhitespace((char)character)){
+            if(!Character.isDigit((char)character) && (char)character != '-' && (char)character != 'e' && (char)character != 'E' && (char)character != '.' && !Character.isWhitespace((char)character)){
                 br.reset();
                 this.position--;
                 break;

@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <groupId>com.simplejson</groupId>
     <artifactId>SimpleJSON</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>simpleJSON</name>
     <url>http://maven.apache.org</url>
     <properties>
