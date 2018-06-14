@@ -8,6 +8,8 @@ package com.simplejson;
 import com.simplejson.parser.SimpleJSONParser;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -15,6 +17,15 @@ import java.util.*;
 
 /** The SimpleJSON class that simplifies non-POJO JSON */
 public class SimpleJSON implements Iterable{
+
+    public static enum Type{
+        NULL,
+        STRING,
+        NUMBER,
+        MAP,
+        ARRAY,
+        BOOLEAN
+    }
 
     /** String value - either has value or null */
     private String s_value = null;
@@ -56,40 +67,50 @@ public class SimpleJSON implements Iterable{
      *  @param value Map to use
      */
     public SimpleJSON(Map<String, SimpleJSON> value){
-        this.map_value = new HashMap<String, SimpleJSON>(value);
-        this.is_null = false;
+        if(value != null){
+            this.map_value = new HashMap<String, SimpleJSON>(value);
+            this.is_null = false;
+        }
     }
 
     /** Array constructor - creates array SimpleJSON object from Collection
      *  @param value collection to use
      */
     public SimpleJSON(Collection<SimpleJSON> value){
-        this.array_value = new ArrayList<SimpleJSON>(value);
-        this.is_null = false;
+        if(value != null){
+            this.array_value = new ArrayList<SimpleJSON>(value);
+            this.is_null = false;
+        }
     }
 
     /** String constructor - creates string SimpleJSON object from String
      *  @param value String to use
      */
     public SimpleJSON(String value){
-        this.s_value = value;
-        this.is_null = false;
+        if(value != null){
+            this.s_value = value;
+            this.is_null = false;
+        }
     }
 
     /** BigInteger constructor - creates number SimpleJSON object from BigInteger
      *  @param value BigInteger to use
      */
     public SimpleJSON(BigInteger value){
-        this.bd_value = new BigDecimal(value);
-        this.is_null = false;
+        if(value != null){
+            this.bd_value = new BigDecimal(value);
+            this.is_null = false;
+        }
     }
 
     /** BigDecimal constructor - creates number SimpleJSON object from BigDecimal
      *  @param value BigDecimal to use
      */
     public SimpleJSON(BigDecimal value){
-        this.bd_value = value;
-        this.is_null = false;
+        if(value != null){
+            this.bd_value = value;
+            this.is_null = false;
+        }
     }
 
     /** boolean constructor - creates boolean SimpleJSON object from a boolean
@@ -148,6 +169,25 @@ public class SimpleJSON implements Iterable{
         this.is_null = false;
     }
 
+    /** Gets JSON type in Enum
+     *  Possible strings:
+     *      null - Null
+     *      string - String
+     *      number - Number
+     *      map - Map
+     *      array - Array
+     *      boolean - Boolean
+     *  @return string that describes SimpleJSON
+     */
+    public synchronized SimpleJSON.Type getType(){
+        if(this.is_null) return SimpleJSON.Type.NULL;
+        if(this.s_value != null) return SimpleJSON.Type.STRING;
+        if(this.bd_value != null) return SimpleJSON.Type.NUMBER;
+        if(this.map_value != null) return SimpleJSON.Type.MAP;
+        if(this.array_value != null) return SimpleJSON.Type.ARRAY;
+        return SimpleJSON.Type.BOOLEAN;
+    }
+
     /** Gets JSON type in String
      *  Possible strings:
      *      null - Null
@@ -158,7 +198,7 @@ public class SimpleJSON implements Iterable{
      *      boolean - Boolean
      *  @return string that describes SimpleJSON
      */
-    public synchronized String getType(){
+    public synchronized String getTypeString(){
         if(this.is_null) return "null";
         if(this.s_value != null) return "string";
         if(this.bd_value != null) return "number";
@@ -173,8 +213,6 @@ public class SimpleJSON implements Iterable{
      *  If type of SimpleJSON is string, it returns String
      *  If type of SimpleJSON is numeric, it returns BigDecimal
      *  If type of SimpleJSON is map, it returns HashMap.
-     *      Warning: this HashMap is mutable, whatever change you make to it, will
-     *      affect this SimpleJSON.
      *  If type of SimpleJSON is array, it returns ArrayList
      *      Warning: this ArrayList is mutable, whatever change you make to it, will
      *      affect this SimpleJSON.
@@ -185,9 +223,9 @@ public class SimpleJSON implements Iterable{
         if(this.is_null) return null;
         if(this.s_value != null) return this.s_value;
         if(this.bd_value != null) return this.bd_value;
-        if(this.map_value != null) return this.map_value;
-        if(this.array_value != null) return this.array_value;
-        return new Boolean(this.b_value);
+        if(this.map_value != null) return new HashMap<String,SimpleJSON>(this.map_value);
+        if(this.array_value != null) return new ArrayList<SimpleJSON>(this.array_value);
+        return this.b_value;
     }
 
     /** Gets String from SimpleJSON
@@ -985,15 +1023,16 @@ public class SimpleJSON implements Iterable{
     }
 
     /** Accesses an entry in SimpleJSON array or map
+     *  For map, index value will be implictly converted to key and retrieve the entry using key in the map
      *  Will only work if SimpleJSON is set to array or map
-     *  @param key key to get entry
+     *  @param index index to get entry
      *  @return SimpleJSON value if found. If not found, null
      *  @throws InvalidTypeException Thrown when SimpleJSON is in invalid type
      */
-    public synchronized SimpleJSON get(int key) throws InvalidTypeException{
+    public synchronized SimpleJSON get(int index) throws InvalidTypeException{
         if(this.is_null ||  (this.map_value == null && this.array_value == null)) throw new InvalidTypeException("The SimpleJSON object is not an array or map");
-        if(this.map_value != null) return this.map_value.get("" + key);
-        return this.array_value.get(key);
+        if(this.map_value != null) return this.map_value.get("" + index);
+        return this.array_value.get(index);
     }
 
     /** Returns keySet of SimpleJSON map
@@ -1097,75 +1136,210 @@ public class SimpleJSON implements Iterable{
         if(!(obj instanceof SimpleJSON)) return false;
         SimpleJSON value = (SimpleJSON) obj;
         switch(value.getType()){
-            case "null":    return this.is_null == value.is_null;
-            case "string":  if(this.is_null || this.s_value == null) return false;
+            case NULL:    return this.is_null == value.is_null;
+            case STRING:  if(this.is_null || this.s_value == null) return false;
                             return this.s_value.equals(value.s_value);
-            case "number": if(this.is_null || this.bd_value == null) return false;
+            case NUMBER: if(this.is_null || this.bd_value == null) return false;
                             return this.bd_value.equals(value.bd_value);
-            case "boolean": if(this.is_null || this.s_value != null || this.bd_value != null || this.map_value != null || this.array_value != null) return false;
+            case BOOLEAN: if(this.is_null || this.s_value != null || this.bd_value != null || this.map_value != null || this.array_value != null) return false;
                             return this.b_value == value.b_value;
-            case "map":     if(this.is_null || this.map_value == null) return false;
+            case MAP:     if(this.is_null || this.map_value == null) return false;
                             return this.map_value.equals(value.map_value);
-            case "array":   if(this.is_null || this.array_value == null) return false;
+            case ARRAY:   if(this.is_null || this.array_value == null) return false;
                             return this.array_value.equals(value.array_value);
             default:        return false;
         }
     }
 
     /** Encodes the SimpleJSON to JSON string
-     *  @return JSON encoded string
+     *  @param writer Writer that JSON-formatted string will be written on
+     *  @param pretty true to pretty-print the string
+     *  @throws IOException thrown when there's a problem with writing on the writer stream
      */
-    public synchronized String toJSON(){
+    public synchronized void toStream(Writer writer, boolean pretty) throws IOException{
+        this.toStreamInternal(writer, pretty, 0);
+    }
+
+    /** Encodes the SimpleJSON to JSON string (for internal uses only with tab leveling)
+     *  @param writer Writer that JSON-formatted string will be written on
+     *  @param pretty true to pretty-print the string
+     *  @param tab_level sets the level of tab
+     *  @throws IOException thrown when there's a problem with writing on the writer stream
+     */
+     private synchronized void toStreamInternal(Writer writer, boolean pretty, int tab_level) throws IOException{
 
         // Return on basic values
-        if(this.is_null) return "null";
-        if(this.bd_value != null) return this.bd_value.toString();
-        if(this.s_value == null && this.array_value == null && this.map_value == null) return this.b_value ? "true" : "false";
+        if(this.is_null){
+            writer.write("null");
+            return;
+        }
+        if(this.bd_value != null){
+            writer.write(this.bd_value.toString());
+            return;
+        }
+        if(this.s_value == null && this.array_value == null && this.map_value == null){
+            writer.write(this.b_value ? "true" : "false");
+            return;
+        }
 
         // Build on complex value
-        StringBuilder sb = new StringBuilder();
         if(this.s_value != null){
-            sb.append("\"");
-            sb.append (this.s_value);
-            sb.append("\"");
-            return sb.toString();
+            writer.write('\"');
+            writer.write(SimpleJSON.escapeControlCharacters(this.s_value));
+            writer.write('\"');
+            return;
         }
 
         if(this.map_value != null){
-            sb.append("{");
+            writer.write('{');
+            tab_level++;
             boolean first = true;
+            int count = this.map_value.size()-1;
             for(Map.Entry<String, SimpleJSON> entry : this.map_value.entrySet()){
-                if(!first){
-                    sb.append(",");
-                }else first = false;
-                sb.append("\"");
-                sb.append(entry.getKey());
-                sb.append("\":");
-                sb.append(entry.getValue().toJSON());
+                if(first && pretty){
+                    writer.write('\n');
+                    first = false;
+                }
+                if(pretty){
+                    for(int i = 0; i < tab_level; i++){
+                        writer.write('\t');
+                    }
+                }
+                writer.write('\"');
+                writer.write(entry.getKey());
+                writer.write("\":");
+                entry.getValue().toStreamInternal(writer, pretty, tab_level);
+                if(count != 0){
+                    count--;
+                    writer.write(',');
+                    if(pretty) writer.write('\n');
+                }
             }
-            sb.append("}");
+            if(!first && pretty) writer.write('\n');
+            tab_level--;
+            if(pretty){
+                for(int i = 0; i < tab_level; i++){
+                    writer.write('\t');
+                }
+            }
+            writer.write('}');
         }else{
-            sb.append("[");
+            writer.write('[');
+            tab_level++;
             boolean first = true;
+            int count = this.array_value.size()-1;
             for(SimpleJSON value : this.array_value){
-                if(!first){
-                    sb.append(",");
-                }else first = false;
-                sb.append(value.toJSON());
+                if(first && pretty){
+                    writer.write('\n');
+                    first = false;
+                }
+                if(pretty){
+                    for(int i = 0; i < tab_level; i++){
+                        writer.write('\t');
+                    }
+                }
+                value.toStreamInternal(writer, pretty, tab_level);
+                if(count != 0){
+                    count--;
+                    writer.write(',');
+                    if(pretty) writer.write('\n');
+                }
             }
-            sb.append("]");
+            if(!first && pretty) writer.write('\n');
+            tab_level--;
+            if(pretty){
+                for(int i = 0; i < tab_level; i++){
+                    writer.write('\t');
+                }
+            }
+            writer.write(']');
         }
+    }
 
-        // Return the string
+    /** Escapes control characters in the string
+     *  @param string String with potential unescaped control characters
+     *  @return string with all control characters escaped
+     */
+    private static String escapeControlCharacters(String string){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < string.length(); i++){
+            switch(string.charAt(i)){
+                case '\n': sb.append("\\n"); break;
+                case '\\': sb.append("\\"); break;
+                case '/': sb.append("\\/"); break;
+                case '\b': sb.append("\\b"); break;
+                case '\f': sb.append("\\f"); break;
+                case '\r': sb.append("\\r"); break;
+                case '\t': sb.append("\\t"); break;
+                //TODO what to do with unicode
+                default: sb.append(string.charAt(i));
+            }
+        }
         return sb.toString();
     }
 
     /** Returns string representation of SimpleJSON
-     *  @return string representation of SimpleJSON
+     *  @return string that represents SimpleJSON
      */
     @Override
     public synchronized String toString(){
-        return "SimpleJSON(" + this.toJSON() + ")";
+        StringBuilder sb = new StringBuilder();
+        sb.append("SimpleJSON(");
+        boolean first = true;
+        switch(this.getType()){
+            case NULL :     sb.append("null"); break;
+            case STRING:    sb.append('"');
+                            sb.append(SimpleJSON.escapeControlCharacters(this.getStringOnly()));
+                            sb.append('"');
+                            break;
+            case NUMBER:    sb.append(this.getDecimal().toString()); break;
+            case BOOLEAN:   sb.append(this.getBoolean()); break;
+            case MAP:       sb.append("map{");
+                            for(Map.Entry<String,SimpleJSON> entry : this.map_value.entrySet()){
+                                if(first) first = false;
+                                else sb.append(", ");
+                                sb.append('"');
+                                sb.append(entry.getKey());
+                                sb.append('"');
+                                sb.append(':');
+                                sb.append(entry.getValue().toString());
+                            }
+                            sb.append('}');
+                            break;
+            case ARRAY:     sb.append("array[");
+                            for(SimpleJSON entry : this.array_value){
+                                if(first) first = false;
+                                else sb.append(", ");
+                                sb.append(entry.toString());
+                            }
+                            sb.append(']');
+                            break;
+        }
+        sb.append(')');
+        return sb.toString();
+    }
+
+    /** Encodes the SimpleJSON to JSON string
+     *  @param pretty true to pretty-print the string
+     *  @return JSON encoded string
+     */
+    public synchronized String toJSON(boolean pretty){
+        String json = null;
+        try(StringWriter sw = new StringWriter()){
+            this.toStream(sw, pretty);
+            sw.flush();
+            json = sw.toString();
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        return json;
+    }
+
+    /** Encodes the SimpleJSON to JSON string
+     *  @return JSON encoded string
+     */
+    public synchronized String toJSON(){
+        return this.toJSON(false);
     }
 
     /** Parses the string into SimpleJSON object
@@ -1185,5 +1359,110 @@ public class SimpleJSON implements Iterable{
      */
     public static SimpleJSON fromJSON(Reader reader) throws IOException, ParseException{
         return SimpleJSONParser.fromJSON(reader);
+    }
+
+    /** Creates new NULL SimpleJSON
+     *  @return NULL SimpleJSON
+     */
+    public static SimpleJSON getAsNULL(){
+        return new SimpleJSON();
+    }
+
+    /** Creates new String SimpleJSON
+     *  @param value initial value
+     *  @return String SimpleJSON
+     */
+    public static SimpleJSON getAsString(String value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(byte value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(short value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(int value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(long value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(float value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(double value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(BigInteger value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Number SimpleJSON
+     *  @param value initial value
+     *  @return Number SimpleJSON
+     */
+    public static SimpleJSON getAsNumber(BigDecimal value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new Boolean SimpleJSON
+     *  @param value initial value
+     *  @return Boolean SimpleJSON
+     */
+    public static SimpleJSON getAsBoolean(boolean value){
+        return new SimpleJSON(value);
+    }
+
+    /** Creates new empty map SimpleJSON
+     *  @return empty map SimpleJSON
+     */
+    public static SimpleJSON getAsEmptyMap(){
+        SimpleJSON json = new SimpleJSON();
+        json.setEmptyMap();
+        return json;
+    }
+
+    /** Creates new empty map SimpleJSON
+     *  @return empty map SimpleJSON
+     */
+    public static SimpleJSON getAsEmptyArray(){
+        SimpleJSON json = new SimpleJSON();
+        json.setEmptyArray();
+        return json;
     }
 }

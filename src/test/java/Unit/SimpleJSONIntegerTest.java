@@ -38,7 +38,7 @@ public class SimpleJSONIntegerTest extends TestCase{
      */
     public void testType(){
         SimpleJSON json = new SimpleJSON((int)9329991);
-        assertTrue(json.getType().equals("number"));
+        assertTrue(json.getTypeString().equals("number"));
     }
 
     public void testGet(){
@@ -295,77 +295,77 @@ public class SimpleJSONIntegerTest extends TestCase{
     public void testSetString(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set("hello");
-        assertEquals("string", json.getType());
+        assertEquals("string", json.getTypeString());
         assertEquals("hello", json.get());
     }
 
     public void testSetBoolean(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(true);
-        assertEquals("boolean", json.getType());
+        assertEquals("boolean", json.getTypeString());
         assertEquals(true, json.get());
     }
 
     public void testSetByte(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set((byte)10);
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals((byte)10, json.getByte());
     }
 
     public void testSetShort(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set((short)10);
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals((short)10, json.getShort());
     }
 
     public void testSetInteger(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(10);
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals(10, json.getInt());
     }
 
     public void testSetLong(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(10L);
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals(10L, json.getLong());
     }
 
     public void testSetFloat(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(10.0f);
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals(10.0f, json.getFloat());
     }
 
     public void testSetDouble(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(10.0);
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals(10.0, json.getDouble());
     }
 
     public void testSetBigInteger(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(new BigInteger("10"));
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals("10", json.getString());
     }
 
     public void testSetBigDecimal(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set(new BigDecimal("10"));
-        assertEquals("number", json.getType());
+        assertEquals("number", json.getTypeString());
         assertEquals("10", json.getString());
     }
 
     public void testSetMapSinglePair(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.set("key", new SimpleJSON("value"));
-        assertEquals("map", json.getType());
+        assertEquals("map", json.getTypeString());
         assertEquals("value", json.get("key").getStringOnly());
         assertEquals(1, json.size());
     }
@@ -375,7 +375,7 @@ public class SimpleJSONIntegerTest extends TestCase{
         HashMap<String,SimpleJSON> map = new HashMap<String,SimpleJSON>();
         map.put("key", new SimpleJSON("value"));
         json.set(map);
-        assertEquals("map", json.getType());
+        assertEquals("map", json.getTypeString());
         assertEquals("value", json.get("key").getStringOnly());
         assertEquals(1, json.size());
     }
@@ -385,7 +385,7 @@ public class SimpleJSONIntegerTest extends TestCase{
         ArrayList<SimpleJSON> array = new ArrayList<SimpleJSON>();
         array.add(new SimpleJSON("value"));
         json.set(array);
-        assertEquals("array", json.getType());
+        assertEquals("array", json.getTypeString());
         assertEquals("value", json.get(0).getStringOnly());
         assertEquals(1, json.size());
     }
@@ -393,14 +393,14 @@ public class SimpleJSONIntegerTest extends TestCase{
     public void testSetEmptyMap(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.setEmptyMap();
-        assertEquals("map", json.getType());
+        assertEquals("map", json.getTypeString());
         assertEquals(0, json.size());
     }
 
     public void testSetEmptyArray(){
         SimpleJSON json = new SimpleJSON((int)9329991);
         json.setEmptyArray();
-        assertEquals("array", json.getType());
+        assertEquals("array", json.getTypeString());
         assertEquals(0, json.size());
     }
 
@@ -840,7 +840,7 @@ public class SimpleJSONIntegerTest extends TestCase{
         }catch(ParseException e){
             fail();
         }
-        assertTrue(json.getType().equals("number"));
+        assertTrue(json.getTypeString().equals("number"));
         assertTrue(json.getInt() == testvalue);
     }
 }

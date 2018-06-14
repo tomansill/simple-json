@@ -54,7 +54,7 @@ public class SimpleJSONParser{
      *  @throws ParseException thrown when there's a problem with parsing the string
      */
     public static SimpleJSON fromJSON(Reader reader) throws IOException, ParseException{
-        SimpleJSONParserSingleThreadRecursion parser = new SimpleJSONParserSingleThreadRecursion();
+        SimpleJSONParserRecursion parser = new SimpleJSONParserRecursion();
         return parser.fromJSON(reader);
     }
 }

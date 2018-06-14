@@ -55,7 +55,7 @@ public class SimpleJSONParserTest extends TestCase{
         String test_json = "null";
         try{
             SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-            assertEquals(json.getType(), "null");
+            assertEquals(json.getTypeString(), "null");
             assertTrue(json.get() == null);
         }catch(ParseException e){
             System.err.println("From " + Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -68,7 +68,7 @@ public class SimpleJSONParserTest extends TestCase{
         String test_json = "true";
         try{
             SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-            assertEquals(json.getType(), "boolean");
+            assertEquals(json.getTypeString(), "boolean");
             assertTrue(((Boolean)json.get()).booleanValue());
         }catch(ParseException e){
             System.err.println("From " + Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -81,7 +81,7 @@ public class SimpleJSONParserTest extends TestCase{
         String test_json = "false";
         try{
             SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-            assertEquals(json.getType(), "boolean");
+            assertEquals(json.getTypeString(), "boolean");
             assertFalse(((Boolean)json.get()).booleanValue());
         }catch(ParseException e){
             System.err.println("From " + Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -94,7 +94,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = "\"abcdef\"";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "string");
+             assertEquals(json.getTypeString(), "string");
              assertEquals(json.get().getClass().getSimpleName(), String.class.getSimpleName());
              assertEquals(json.getString(), "abcdef");
          }catch(ParseException e){
@@ -109,7 +109,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -127,7 +127,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -145,7 +145,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -163,7 +163,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -181,7 +181,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -201,7 +201,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -221,7 +221,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -241,7 +241,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getByte(), (byte)value);
              assertEquals(json.getShort(), (short)value);
@@ -261,7 +261,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getFloat(), (float)value);
              assertEquals(json.getDouble(), (double)value);
@@ -277,7 +277,7 @@ public class SimpleJSONParserTest extends TestCase{
          String test_json = value + "";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "number");
+             assertEquals(json.getTypeString(), "number");
              assertEquals(json.get().getClass().getSimpleName(), BigDecimal.class.getSimpleName());
              assertEquals(json.getFloat(), (float)value);
              assertEquals(json.getDouble(), (double)value);
@@ -298,7 +298,7 @@ public class SimpleJSONParserTest extends TestCase{
          test_json += "]";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "array");
+             assertEquals(json.getTypeString(), "array");
              assertEquals(json.get().getClass().getSimpleName(), ArrayList.class.getSimpleName());
              for(int i = 0; i < arr.length; i++){
                  assertEquals((float)arr[i], json.get(i).getFloat());
@@ -320,7 +320,7 @@ public class SimpleJSONParserTest extends TestCase{
          test_json += "]";
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json);
-             assertEquals(json.getType(), "array");
+             assertEquals(json.getTypeString(), "array");
              assertEquals(json.get().getClass().getSimpleName(), ArrayList.class.getSimpleName());
              for(int i = 0; i < arr.length; i++){
                  assertEquals(arr[i], json.get(i).getStringOnly());
@@ -352,12 +352,12 @@ public class SimpleJSONParserTest extends TestCase{
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toJSON());
              //System.out.println("json: " + json);
-             assertEquals(json.getType(), "array");
+             assertEquals(json.getTypeString(), "array");
              assertEquals(json.get().getClass().getSimpleName(), ArrayList.class.getSimpleName());
              assertEquals(test_json.size(), json.size());
              for(int i = 0; i < json.size(); i++){
                  ////System.out.println("count: " + i);
-                 assertEquals(test_json.get(i).getType(), json.get(i).getType());
+                 assertEquals(test_json.get(i).getTypeString(), json.get(i).getTypeString());
                  if(test_json.get(i).get() != null && json.get(i).get() != null){
                      assertEquals(test_json.get(i).get().getClass().getSimpleName(), json.get(i).get().getClass().getSimpleName());
                  }
@@ -390,7 +390,7 @@ public class SimpleJSONParserTest extends TestCase{
              //System.out.println("test: " + test_json);
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toJSON());
              //System.out.println("json: " + json);
-             assertEquals(json.getType(), "map");
+             assertEquals(json.getTypeString(), "map");
              assertEquals(json.get().getClass().getSimpleName(), HashMap.class.getSimpleName());
              assertEquals(test_json.size(), json.size());
              for(Map.Entry<String, SimpleJSON> entry : test_json.entrySet()){
@@ -399,7 +399,7 @@ public class SimpleJSONParserTest extends TestCase{
                  assertTrue(json.containsKey(key));
                  SimpleJSON other_value = json.get(key);
                  assertNotNull(other_value);
-                 assertEquals(value.getType(), other_value.getType());
+                 assertEquals(value.getTypeString(), other_value.getTypeString());
                  if(value.get() != null && other_value.get() != null){
                      assertEquals(value.get().getClass().getSimpleName(), other_value.get().getClass().getSimpleName());
                  }
@@ -451,6 +451,9 @@ public class SimpleJSONParserTest extends TestCase{
          test_json.put("map", something);
          try{
              SimpleJSON json = SimpleJSONParser.fromJSON(test_json.toJSON());
+             //System.out.println(json.toJSON(true));
+             //System.out.println(json.toJSON(false));
+             //System.out.println(json);
          }catch(ParseException e){
              System.err.println("From " + Thread.currentThread().getStackTrace()[1].getMethodName());
              e.printStackTrace();

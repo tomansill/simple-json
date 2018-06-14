@@ -17,17 +17,21 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class SimpleJSONParserSingleThreadRecursion{
+public class SimpleJSONParserRecursion{
 
     private long position = 0;
 
-    public SimpleJSONParserSingleThreadRecursion(){}
+    public SimpleJSONParserRecursion(){}
 
     public SimpleJSON fromJSON(Reader reader) throws IOException, ParseException{
         //System.out.println("> fromJSON: " + this.position);
 
-        // Create buffered reader
-        BufferedReader br = new BufferedReader(reader);
+        // Use buffered reader
+        BufferedReader br = null;
+
+        // If reader is already a BufferedReader, reuse it otherwise create new BufferedReader
+        if(reader instanceof BufferedReader) br = (BufferedReader) reader;
+        else br = new BufferedReader(reader);
 
         // Parse it
         SimpleJSON json = handleValue(br);
